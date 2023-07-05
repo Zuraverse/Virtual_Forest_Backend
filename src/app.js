@@ -17,7 +17,8 @@ const PORT = process.env.PORT || 3000;
 const CONNECTION = process.env.CONNECTION;
 
 // For using routes 
-app.use('/customers', router);
+//**********************changed the initial path for the routes...***************************\\\
+app.use('/', router);
 
 // start the mongoose connection
 const start = async() => { 

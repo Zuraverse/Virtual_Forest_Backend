@@ -40,9 +40,13 @@ const manure= async(req,res) => {
     const userId = req.params.id;
     try {
         const users = await user.findById(userId);
-        users.updateManureBags();
-        await users.save();
-        console.log("Manure Bags Updated!!");
+        if (users.manureBags > 0) {
+            users.updateManureBags();
+            await users.save();
+            const seeds = await seed.findOneAndUpdate({seedOwner: users.walletAddress},{$inc: {age: 1}},{new: true});
+            console.log(`Updated age for seed ID: ${seeds.id}`);
+            console.log("Manure Bags Updated!!");
+        } 
         res.json({users});
     } catch (e) {
         res.status(400).json({error: e.message});

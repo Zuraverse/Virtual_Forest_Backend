@@ -93,6 +93,8 @@ const seedsSchema = new mongoose.Schema({
 userSchema.methods.updateManureBags = function() {
     if(this.manureBags != 0) {
         this.manureBags -= 1;
+    } else {
+        console.log("You Don't have enough manure Bags!!");
     }
 }
 
