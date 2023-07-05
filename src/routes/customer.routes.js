@@ -1,11 +1,6 @@
 const express = require('express');
-const {getAllCustomers, saveCustomer, saveUser, findUser, manure, age, saveSeed, die, dieHealth } = require('../controllers/customer.controller');
+const {saveUser, findUser, manure, age, saveSeed, die, Health } = require('../controllers/customer.controller');
 const router = express.Router();
-
-router
-    .route('/')
-    .get(getAllCustomers)
-    .post(saveCustomer)
 
 router
     .route('/users/:id')
@@ -26,7 +21,7 @@ router
 
 router
     .route('/seeds/die/:id')
-    .post(dieHealth)
+    .post(Health)
     .put(die)
 
 module.exports = router;

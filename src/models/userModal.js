@@ -1,12 +1,5 @@
 const mongoose = require('mongoose');
- 
-const customerSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    industry: String
-});
+
 
 const userSchema = new mongoose.Schema({
     walletAddress: {
@@ -95,16 +88,26 @@ const seedsSchema = new mongoose.Schema({
     }
 
 });
+
+// For Users
+userSchema.methods.updateManureBags = function() {
+    if(this.manureBags != 0) {
+        this.manureBags -= 1;
+    } else {
+        console.log("You Don't have enough manure Bags!!");
+    }
+}
+
+// For seeds
 seedsSchema.methods.updateAge = function() {
     if (!this.isDead) {
         const now = new Date();
         const timeDiff = Math.abs(now - this.timeofwatering);
         const hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
-        console.log(timeDiff);
+        // console.log(timeDiff);
         if (hoursDiff >= 24) {
             const daysDiff = Math.floor(hoursDiff / 24);
             this.age += daysDiff;
-            this.timeofwatering = now;
             
             if (this.age > 0 && this.age <= 4) {
                 this.stage = "seed";
@@ -114,37 +117,24 @@ seedsSchema.methods.updateAge = function() {
                 this.isTree = true;
                 this.stage = "tree";
             }
-            
-            if (this.age >= this.hrsToDie) {
-                this.isDead = true;
-                this.stage = "dead";
-            }
-            this.updateAge();
+            // this.updateAge();
             console.log(daysDiff);
         }
     } else {
-        console.log("The sapling is dead.");
-    }
-};
-seedsSchema.methods.updateHrsToDie = function() {
-    if (!this.isDead) {
-        if (this.hrsToDie > 0) {
-            this.hrsToDie -= 1;
-            
-            if (this.hrsToDie <= 0) {
-                this.isDead = true;
-            }
-            this.updateHrsToDie();
-        }
-    } else {
-        console.log("The sapling is dead.");
+        this.stage = "Dead";
     }
 };
 
-seedsSchema.methods.updateHrsToDieHealth = function() {
+seedsSchema.methods.updateHrsToDie = function() {
+        if (this.hrsToDie == 0) {
+            this.isDead = true;  
+            // console.log(this.isDead);
+        }
+};
+
+seedsSchema.methods.updateHealth = function() {
     if (!this.isDead) {
-        if (this.hrsToDie > 0) {
-            this.hrsToDie -= 1;
+        if (this.hrsToDie >= 0) {
             console.log(this.hrsToDie);
             if (this.hrsToDie <= 6) {
                 this.seedHealth = "red";
@@ -153,23 +143,19 @@ seedsSchema.methods.updateHrsToDieHealth = function() {
             } else {
                 this.seedHealth = "green";
             }
-            
-            if (this.hrsToDie <= 0) {
-                this.isDead = true;
+            if(this.isWatered){
+                this.hrsToDie = 24;
             }
-            
-            this.updateHrsToDieHealth();
         }
     } else {
         console.log("The sapling is dead.");
     }
 };
-const customer = mongoose.model('customer', customerSchema);
+
 const user = mongoose.model('user', userSchema);
 const seed = mongoose.model('seed', seedsSchema);
 
 module.exports = {
-    customer: customer,
     user: user,
     seed: seed
 }
