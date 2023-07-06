@@ -101,27 +101,27 @@ const Health = async(req,res) => {
     }
 }
 
-// Updates age of all the seeds after 24 hours
-// setInterval(() => {
-//     seed.updateMany({}, {$inc: {age: 1}}).exec()
-//         .then(() => {
-//             console.log("Ages updated successfully.");
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }, 6000);
+// Updates age of all the seeds after every 24 hours
+setInterval(() => {
+    seed.updateMany({}, {$inc: {age: 1}}).exec()
+        .then(() => {
+            console.log("Ages updated successfully.");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}, 86400000);
 
-// Updates the time hrsToDie field for all seeds after every hour.
-// setInterval(() => {
-//     seed.updateMany({hrsToDie: {$gt: 0}}, {$inc: {hrsToDie: -1}}).exec()
-//         .then(() => {
-//             console.log("HrsToDie updated successfully.");
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }, 6000);
+// Updates the time hrsToDie field for all seeds after every 1 hour.
+setInterval(() => {
+    seed.updateMany({hrsToDie: {$gt: 0}}, {$inc: {hrsToDie: -1}}).exec()
+        .then(() => {
+            console.log("HrsToDie updated successfully.");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}, 3600000);
 
 
 module.exports = {saveUser, findUser, manure, age, saveSeed, die, Health}
