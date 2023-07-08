@@ -55,8 +55,14 @@ const seedsSchema = new mongoose.Schema({
         default: Date.now()
     },
     coordinates: {
-        type: String,
-        required: true
+        latitude: {
+            type: String,
+            required: true
+        },
+        longitude: {
+            type: String,
+            required: true
+        }
     },
     seedType: {
         type: String,
